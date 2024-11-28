@@ -1,3 +1,3 @@
 # Airbnb Database ERP
 
-![Airbnb ERP]('../public/airbnb_erp.png)
+![Airbnb ERP]('/public/airbnb_erp.png)

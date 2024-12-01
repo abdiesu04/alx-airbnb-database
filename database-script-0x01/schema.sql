@@ -1,6 +1,6 @@
 -- 1. Users Table
 CREATE TABLE Users (
-    user_id INT PRIMARY KEY,
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
     user_name VARCHAR(255) NOT NULL,
     user_email VARCHAR(255) NOT NULL UNIQUE,
     user_first_name VARCHAR(255),
@@ -16,19 +16,15 @@ CREATE TABLE Users (
 -- Index for user_email (to speed up lookups based on email)
 CREATE INDEX idx_user_email ON Users(user_email);
 
----
-
 -- 2. Roles Table
 CREATE TABLE Roles (
-    role_id INT PRIMARY KEY,
+    role_id INT PRIMARY KEY AUTO_INCREMENT,
     role_name ENUM('guest', 'host', 'admin') NOT NULL
 );
 
----
-
 -- 3. Properties Table
 CREATE TABLE Properties (
-    property_id INT PRIMARY KEY,
+    property_id INT PRIMARY KEY AUTO_INCREMENT,
     host_id INT,
     name VARCHAR(255) NOT NULL,
     description TEXT,
@@ -44,14 +40,9 @@ CREATE TABLE Properties (
     FOREIGN KEY (host_id) REFERENCES Users(user_id)
 );
 
--- Index for location to speed up queries based on location
-CREATE INDEX idx_property_location ON Properties(location);
-
----
-
 -- 4. Property Address Table
 CREATE TABLE Property_Address (
-    address_id INT PRIMARY KEY,
+    address_id INT PRIMARY KEY AUTO_INCREMENT,
     property_id INT,
     address_line1 VARCHAR(255) NOT NULL,
     address_line2 VARCHAR(255),
@@ -62,11 +53,9 @@ CREATE TABLE Property_Address (
     FOREIGN KEY (property_id) REFERENCES Properties(property_id)
 );
 
----
-
 -- 5. Bookings Table
 CREATE TABLE Bookings (
-    booking_id INT PRIMARY KEY,
+    booking_id INT PRIMARY KEY AUTO_INCREMENT,
     guest_id INT,
     property_id INT,
     start_date DATE NOT NULL,
@@ -79,14 +68,9 @@ CREATE TABLE Bookings (
     FOREIGN KEY (property_id) REFERENCES Properties(property_id)
 );
 
--- Index for guest_id and property_id to speed up joins
-CREATE INDEX idx_guest_property ON Bookings(guest_id, property_id);
-
----
-
 -- 6. Payments Table
 CREATE TABLE Payments (
-    payment_id INT PRIMARY KEY,
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
     booking_id INT,
     amount DECIMAL(10, 2) NOT NULL,
     payment_method ENUM('credit_card', 'paypal', 'bank_transfer') NOT NULL,
@@ -95,11 +79,9 @@ CREATE TABLE Payments (
     FOREIGN KEY (booking_id) REFERENCES Bookings(booking_id)
 );
 
----
-
 -- 7. Reviews Table
 CREATE TABLE Reviews (
-    review_id INT PRIMARY KEY,
+    review_id INT PRIMARY KEY AUTO_INCREMENT,
     property_id INT,
     guest_id INT,
     review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -109,6 +91,3 @@ CREATE TABLE Reviews (
     FOREIGN KEY (property_id) REFERENCES Properties(property_id),
     FOREIGN KEY (guest_id) REFERENCES Users(user_id)
 );
-
--- Index for property_id and guest_id for faster reviews retrieval
-CREATE INDEX idx_property_guest ON Reviews(property_id, guest_id);

@@ -16,8 +16,9 @@ FROM
 INNER JOIN 
     Users 
 ON 
-    Bookings.guest_id = Users.user_id;
-
+    Bookings.guest_id = Users.user_id
+ORDER BY 
+    Bookings.booking_id;
 
 
 -- 2. Retrieve all properties and their reviews, including properties that have no reviews, using a LEFT JOIN:

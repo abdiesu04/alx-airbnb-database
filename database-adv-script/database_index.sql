@@ -1,11 +1,8 @@
-
-
-
 -- Index for user_email (to speed up lookups based on email)
-CREATE INDEX idx_user_email ON Users(user_email);
+CREATE INDEX idx_user_email ON User(user_email);
 
 -- Index for user_role_id (to speed up lookups based on role)
-CREATE INDEX idx_user_role_id ON Users(user_role_id);
+CREATE INDEX idx_user_role_id ON User(user_role_id);
 
 -- Index for host_id (to speed up lookups based on host)
 CREATE INDEX idx_host_id ON Properties(host_id);
@@ -27,3 +24,6 @@ CREATE INDEX idx_property_id_review ON Reviews(property_id);
 
 -- Index for guest_id in Reviews (to speed up lookups based on guest)
 CREATE INDEX idx_guest_id_review ON Reviews(guest_id);
+
+-- Analyze the performance of a sample query
+EXPLAIN ANALYZE SELECT * FROM Users WHERE user_email = 'john.doe@example.com';

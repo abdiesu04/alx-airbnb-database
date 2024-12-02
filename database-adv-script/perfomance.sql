@@ -1,69 +1,71 @@
--- Initial query to retrieve all bookings along with user details, property details, and payment details
+-- Initial query with corrected attribute names based on schema
 SELECT 
-    Bookings.id AS booking_id,
-    Users.id AS user_id,
-    Users.name AS user_name,
-    Properties.id AS property_id,
+    Bookings.booking_id AS booking_id,
+    Bookings.start_date AS start_date,
+    Bookings.end_date AS end_date,
+    Users.user_id AS user_id,
+    Users.user_name AS user_name,
+    Properties.property_id AS property_id,
     Properties.name AS property_name,
-    Payments.id AS payment_id,
+    Payments.payment_id AS payment_id,
     Payments.amount AS payment_amount
 FROM 
     Bookings
-JOIN 
-    Users ON Bookings.user_id = Users.id
-JOIN 
-    Properties ON Bookings.property_id = Properties.id
-JOIN 
-    Payments ON Bookings.payment_id = Payments.id
+INNER JOIN 
+    Users ON Bookings.guest_id = Users.user_id
+INNER JOIN 
+    Properties ON Bookings.property_id = Properties.property_id
+INNER JOIN 
+    Payments ON Bookings.booking_id = Payments.booking_id
 WHERE
-    Users.name LIKE '%John%' AND
+    Users.user_name LIKE '%john%' AND
     Payments.amount > 100;
 
--- Analyze the query's performance
-EXPLAIN QUERY PLAN
+-- Analyze the query's performance using EXPLAIN
+EXPLAIN 
 SELECT 
-    Bookings.id AS booking_id,
-    Users.id AS user_id,
-    Users.name AS user_name,
-    Properties.id AS property_id,
+    Bookings.booking_id AS booking_id,
+    Users.user_id AS user_id,
+    Users.user_name AS user_name,
+    Properties.property_id AS property_id,
     Properties.name AS property_name,
-    Payments.id AS payment_id,
+    Payments.payment_id AS payment_id,
     Payments.amount AS payment_amount
 FROM 
     Bookings
-JOIN 
-    Users ON Bookings.user_id = Users.id
-JOIN 
-    Properties ON Bookings.property_id = Properties.id
-JOIN 
-    Payments ON Bookings.payment_id = Payments.id
+INNER JOIN 
+    Users ON Bookings.guest_id = Users.user_id
+INNER JOIN 
+    Properties ON Bookings.property_id = Properties.property_id
+INNER JOIN 
+    Payments ON Bookings.booking_id = Payments.booking_id
 WHERE
-    Users.name LIKE '%John%' AND
+    Users.user_name LIKE '%john%' AND
     Payments.amount > 100;
 
--- Refactor the query to reduce execution time
--- Ensure indexes are created on the foreign key columns
-CREATE INDEX idx_bookings_user_id ON Bookings(user_id);
+-- Add indexes to improve query performance
+CREATE INDEX idx_bookings_guest_id ON Bookings(guest_id);
 CREATE INDEX idx_bookings_property_id ON Bookings(property_id);
-CREATE INDEX idx_bookings_payment_id ON Bookings(payment_id);
+CREATE INDEX idx_payments_booking_id ON Payments(booking_id);
+CREATE INDEX idx_users_user_name ON Users(user_name);
 
--- Re-run the query after indexing
+-- Optimized query after indexing
 SELECT 
-    Bookings.id AS booking_id,
-    Users.id AS user_id,
-    Users.name AS user_name,
-    Properties.id AS property_id,
+    Bookings.booking_id AS booking_id,
+    Users.user_id AS user_id,
+    Users.user_name AS user_name,
+    Properties.property_id AS property_id,
     Properties.name AS property_name,
-    Payments.id AS payment_id,
+    Payments.payment_id AS payment_id,
     Payments.amount AS payment_amount
 FROM 
     Bookings
-JOIN 
-    Users ON Bookings.user_id = Users.id
-JOIN 
-    Properties ON Bookings.property_id = Properties.id
-JOIN 
-    Payments ON Bookings.payment_id = Payments.id
+INNER JOIN 
+    Users ON Bookings.guest_id = Users.user_id
+INNER JOIN 
+    Properties ON Bookings.property_id = Properties.property_id
+INNER JOIN 
+    Payments ON Bookings.booking_id = Payments.booking_id
 WHERE
-    Users.name LIKE '%John%' AND
+    Users.user_name LIKE '%john%' AND
     Payments.amount > 100;

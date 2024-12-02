@@ -69,3 +69,5 @@ INNER JOIN
 WHERE
     Users.user_name LIKE '%john%' AND
     Payments.amount > 100;
+
+   
